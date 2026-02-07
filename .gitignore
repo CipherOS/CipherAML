@@ -1,0 +1,11 @@
+# Editors and IDEs
+.idea/
+*.iml
+.vscode/
+*.swp
+.DS_Store
+
+# Local build output
+out/
+build/
+*.class
