@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2026 The CipherOS Project
+
+     Licensed under the CipherOS License 2.0. See the LICENSE file in the
+     root of this repository for the full terms.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.cipheros.cipheraml">
+
+    <!--
+        The process is persistent and direct boot aware on purpose. An
+        emergency call can be placed from the lock screen right after a
+        reboot, before the user has ever unlocked, and we need to be up
+        and listening when that happens.
+    -->
+    <application
+        android:name=".CipherAmlApp"
+        android:label="@string/app_name"
+        android:icon="@drawable/ic_emergency_location"
+        android:persistent="true"
+        android:directBootAware="true"
+        android:defaultToDeviceProtectedStorage="true"
+        android:allowBackup="false"
+        android:usesCleartextTraffic="false"
+        android:supportsRtl="true">
+    </application>
+</manifest>

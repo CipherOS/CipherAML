@@ -1,0 +1,20 @@
+//
+// Copyright (C) 2026 The CipherOS Project
+//
+// Licensed under the CipherOS License 2.0. See the LICENSE file in the
+// root of this repository for the full terms.
+//
+
+android_app {
+    name: "CipherAML",
+    srcs: ["src/**/*.java"],
+    resource_dirs: ["res"],
+
+    // We only need @SystemApi surfaces, not hidden internals, so build
+    // against the system SDK. That keeps us portable across ROM trees.
+    sdk_version: "system_current",
+    min_sdk_version: "34",
+
+    privileged: true,
+    system_ext_specific: true,
+}
