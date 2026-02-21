@@ -18,3 +18,19 @@ android_app {
     privileged: true,
     system_ext_specific: true,
 }
+
+// Host side tests for the transport agnostic bits in core/. Those classes
+// stay free of Android dependencies so they can run on a plain JVM:
+//   atest CipherAMLHostTests
+java_test_host {
+    name: "CipherAMLHostTests",
+    srcs: [
+        "src/com/cipheros/cipheraml/core/**/*.java",
+        "tests/host/src/**/*.java",
+    ],
+    static_libs: ["junit"],
+    test_options: {
+        unit_test: true,
+    },
+    test_suites: ["general-tests"],
+}
