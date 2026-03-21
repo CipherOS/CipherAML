@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2026 The CipherOS Project
+
+     Licensed under the CipherOS License 2.0. See the LICENSE file in the
+     root of this repository for the full terms.
+-->
+
+<!--
+    AML endpoint table.
+
+    This ships EMPTY on purpose. AML destinations are run by national
+    emergency services, they change, and some of them only accept traffic
+    from OS vendors they have an agreement with. Sending an emergency
+    location to the wrong number helps nobody, so please only add entries
+    you got from an official source (the national regulator, the PSAP
+    operator, EENA's AML deployment list) and that you have permission to
+    use.
+
+    You can replace this table without touching the app:
+      * drop a file at /product/etc/cipheraml/aml_endpoints.xml
+        (cipher.aml.mk can do this for you, see the README), or
+      * overlay this resource with an RRO.
+
+    Format:
+
+    <country name="..."          Free text, only used in logs.
+             mcc="234,235"       Network MCCs this entry applies to.
+             iso="gb"            Country ISO codes, used when the MCC is
+                                 not known yet (limited service).
+             confidence="90">    Optional, overrides config_amlConfidencePercent.
+
+        <trigger number="999" /> Numbers that start AML. Leave out every
+        <trigger number="112" /> trigger to start on any emergency number.
+
+        <sms destination="999"   Where the SMS goes.
+             type="text"         "text" (default) or "data".
+             port="..."          Destination port, only for type="data".
+             optional-fields="false"  Also send al= and toc= when they fit.
+             partial-imei="false" />  Send only the TAC part of the IMEI.
+
+        <https url="https://..." />  Annex B HTTPS endpoint. https only.
+    </country>
+
+    Example (not a real endpoint, do not uncomment as is):
+
+    <country name="Example" mcc="001" iso="xx">
+        <trigger number="112" />
+        <sms destination="112" />
+        <https url="https://aml.example.invalid/v1" />
+    </country>
+-->
+<aml-endpoints version="1">
+</aml-endpoints>
