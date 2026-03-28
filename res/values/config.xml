@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2026 The CipherOS Project
+
+     Licensed under the CipherOS License 2.0. See the LICENSE file in the
+     root of this repository for the full terms.
+-->
+
+<!-- Knobs a ROM can overlay. The endpoint table lives in xml/aml_endpoints.xml. -->
+<resources>
+    <!-- Whether AML starts out enabled. Users can always switch it off. -->
+    <bool name="config_amlEnabledByDefault">true</bool>
+
+    <!--
+        T1 from TS 103 625: the longest we wait between the emergency call
+        starting and the location going out. We send whatever we have when
+        it fires.
+    -->
+    <integer name="config_amlLocationTimeoutMillis">20000</integer>
+
+    <!--
+        Do not wait for T1 once a GNSS fix is at least this good. Metres at
+        Android's 68% confidence. Set to 0 to always wait the full T1.
+    -->
+    <integer name="config_amlEarlySendAccuracyMeters">25</integer>
+
+    <!--
+        Confidence the radius is reported at, 1 to 99. 68 is what Android
+        measures natively. Individual countries can override this in the
+        endpoint table.
+    -->
+    <integer name="config_amlConfidencePercent">68</integer>
+
+    <!--
+        Skip AML below this battery level when not charging. The spec asks
+        us to keep enough juice for a five minute voice call.
+    -->
+    <integer name="config_amlMinBatteryPercent">2</integer>
+
+    <!--
+        A cached fix older than this is not used as a fallback when nothing
+        fresh arrives before T1.
+    -->
+    <integer name="config_amlMaxCachedFixAgeMillis">60000</integer>
+</resources>
