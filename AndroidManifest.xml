@@ -8,6 +8,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cipheros.cipheraml">
 
+    <!-- Location. LOCATION_BYPASS lets us get a fix with location turned off. -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.LOCATION_BYPASS" />
+
     <!--
         The process is persistent and direct boot aware on purpose. An
         emergency call can be placed from the lock screen right after a
