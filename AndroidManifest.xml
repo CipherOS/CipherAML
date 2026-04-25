@@ -14,6 +14,9 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.LOCATION_BYPASS" />
 
+    <!-- IMEI, IMSI and MSISDN for the AML message. -->
+    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE" />
+
     <!--
         The process is persistent and direct boot aware on purpose. An
         emergency call can be placed from the lock screen right after a
