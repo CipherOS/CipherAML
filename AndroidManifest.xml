@@ -18,6 +18,13 @@
     <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE" />
 
     <!--
+        SMS transport. MODIFY_PHONE_STATE is what lets us send without the
+        message landing in the user's sent folder.
+    -->
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.MODIFY_PHONE_STATE" />
+
+    <!--
         The process is persistent and direct boot aware on purpose. An
         emergency call can be placed from the lock screen right after a
         reboot, before the user has ever unlocked, and we need to be up
