@@ -27,6 +27,9 @@
     <!-- HTTPS transport. -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- Keeps the CPU up for the few seconds a session runs. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <!--
         The process is persistent and direct boot aware on purpose. An
         emergency call can be placed from the lock screen right after a
