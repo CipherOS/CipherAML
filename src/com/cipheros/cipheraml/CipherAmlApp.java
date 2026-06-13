@@ -24,5 +24,6 @@ public class CipherAmlApp extends Application {
     public void onCreate() {
         super.onCreate();
         Log.i(TAG, "CipherAML starting");
+        EmergencyListener.register(this);
     }
 }

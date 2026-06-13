@@ -77,7 +77,8 @@ public final class CountryConfig {
         return number != null && mTriggers.contains(normalizeNumber(number));
     }
 
-    static String normalizeNumber(String number) {
+    /** Strips separators so "1 1 2" and "112" compare equal. */
+    public static String normalizeNumber(String number) {
         StringBuilder sb = new StringBuilder(number.length());
         for (int i = 0; i < number.length(); i++) {
             char c = number.charAt(i);
