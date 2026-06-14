@@ -49,5 +49,15 @@
         android:allowBackup="false"
         android:usesCleartextTraffic="false"
         android:supportsRtl="true">
+
+        <!-- adb only dry run, see DryRunReceiver. -->
+        <receiver
+            android:name=".DryRunReceiver"
+            android:exported="true"
+            android:permission="android.permission.DUMP">
+            <intent-filter>
+                <action android:name="com.cipheros.cipheraml.action.DRY_RUN" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>
