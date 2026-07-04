@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2026 The CipherOS Project
+
+     Licensed under the CipherOS License 2.0. See the LICENSE file in the
+     root of this repository for the full terms.
+-->
+<resources>
+    <!-- Follow whatever the device theme is so we look at home in Settings. -->
+    <style name="Theme.CipherAML.Settings" parent="@android:style/Theme.DeviceDefault.DayNight" />
+</resources>

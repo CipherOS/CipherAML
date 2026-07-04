@@ -7,4 +7,45 @@
 -->
 <resources>
     <string name="app_name" translatable="false">CipherAML</string>
+
+    <!-- Settings screen title. -->
+    <string name="settings_title">Emergency location</string>
+
+    <!-- First paragraph on the settings screen. -->
+    <string name="settings_intro">When you call or text an emergency number, your phone can send its location straight to the emergency service. This is called Advanced Mobile Location (AML) and it can help them get to you faster.</string>
+
+    <!-- Label of the main on/off switch. -->
+    <string name="settings_switch">Send my location in an emergency</string>
+
+    <!-- Status line when the network we are on has an AML endpoint. %1$s is a country name. -->
+    <string name="settings_status_supported">Emergency services on your current network (%1$s) accept AML.</string>
+
+    <!-- Status line when there is no AML endpoint for the current network. -->
+    <string name="settings_status_unsupported">AML is not set up for the network you are on right now, so no location would be sent from here.</string>
+
+    <!-- Status line when not registered on any mobile network. -->
+    <string name="settings_status_no_network">You are not connected to a mobile network right now.</string>
+
+    <!-- Shown when runtime permissions were revoked. %1$s is a list like "Location, SMS". -->
+    <string name="settings_permission_warning">CipherAML is missing permissions it needs (%1$s), so it may not be able to send your location. Tap here to fix it.</string>
+
+    <!-- Names used in the permission warning. -->
+    <string name="permission_location">Location</string>
+    <string name="permission_sms">SMS</string>
+
+    <!-- Heading above the explanation of how AML works. -->
+    <string name="settings_how_title">How it works</string>
+
+    <!-- Explanation of what is sent and when. -->
+    <string name="settings_how_body">Your location is only sent during an emergency call or emergency SMS, only to the emergency service of the country you are in, and only if that country supports AML. For that moment GPS and Wi-Fi location are used even if you normally keep location off. Nothing is sent to CipherOS or anyone else, and nothing is saved on your phone.</string>
+
+    <!-- Reassurance that the call itself is not affected. -->
+    <string name="settings_calls_unaffected">Emergency calls always go through, whether this is on or off.</string>
+
+    <!-- Footer. %1$s is the app version. -->
+    <string name="settings_footer">CipherAML by CipherOS, version %1$s</string>
+
+    <!-- Summary shown in Settings when AML is on or off. -->
+    <string name="summary_on">On</string>
+    <string name="summary_off">Off</string>
 </resources>

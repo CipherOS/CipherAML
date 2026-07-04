@@ -6,7 +6,9 @@
      root of this repository for the full terms.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.cipheros.cipheraml">
+    package="com.cipheros.cipheraml"
+    android:versionCode="1"
+    android:versionName="1.0">
 
     <!-- Tells us when an emergency call or emergency SMS goes out. -->
     <uses-permission android:name="android.permission.READ_ACTIVE_EMERGENCY_SESSION" />
@@ -49,6 +51,13 @@
         android:allowBackup="false"
         android:usesCleartextTraffic="false"
         android:supportsRtl="true">
+
+        <!-- Opened from Settings, which lives in another process, so exported. -->
+        <activity
+            android:name=".settings.AmlSettingsActivity"
+            android:exported="true"
+            android:label="@string/settings_title"
+            android:theme="@style/Theme.CipherAML.Settings" />
 
         <!-- adb only dry run, see DryRunReceiver. -->
         <receiver
