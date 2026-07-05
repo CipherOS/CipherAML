@@ -16,7 +16,7 @@ import com.cipheros.cipheraml.core.AmlReport;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URL;
+import java.net.URI;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
@@ -98,7 +98,7 @@ public final class HttpsTransport {
     }
 
     private static int post(String url, byte[] body) throws IOException {
-        URLConnection raw = new URL(url).openConnection();
+        URLConnection raw = URI.create(url).toURL().openConnection();
         if (!(raw instanceof HttpsURLConnection)) {
             throw new IOException("not an https url");
         }
