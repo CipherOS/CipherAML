@@ -56,8 +56,17 @@ public final class HttpsTransport {
     public void send(HttpsEndpoint endpoint, AmlReport report) {
         byte[] body = AmlHttpsEncoder.encode(report).getBytes(StandardCharsets.UTF_8);
         mExecutor.execute(() -> {
-            boolean ok = postWithRetries(endpoint, body);
-            mHandler.post(() -> mListener.onSendFinished(endpoint.toString(), ok));
+            boolean ok = false;
+            try {
+                ok = postWithRetries(endpoint, body);
+            } catch (RuntimeException e) {
+                // A malformed URL or something odd in the HTTP stack. Either
+                // way the session must hear back from us.
+                Log.e(TAG, "AML post to " + endpoint + " blew up", e);
+            } finally {
+                boolean result = ok;
+                mHandler.post(() -> mListener.onSendFinished(endpoint.toString(), result));
+            }
         });
     }
 
