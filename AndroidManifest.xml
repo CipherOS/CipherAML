@@ -59,6 +59,18 @@
             android:label="@string/settings_title"
             android:theme="@style/Theme.CipherAML.Settings" />
 
+        <!-- Our row in Settings > Location > Location services. -->
+        <service
+            android:name=".settings.AmlSettingInjectorService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.location.SettingInjectorService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.location.SettingInjectorService"
+                android:resource="@xml/location_setting_injector" />
+        </service>
+
         <!-- adb only dry run, see DryRunReceiver. -->
         <receiver
             android:name=".DryRunReceiver"

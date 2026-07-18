@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2026 The CipherOS Project
+
+     Licensed under the CipherOS License 2.0. See the LICENSE file in the
+     root of this repository for the full terms.
+-->
+<injected-location-setting xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/injected_setting_title"
+    android:icon="@drawable/ic_emergency_location"
+    android:settingsActivity="com.cipheros.cipheraml.settings.AmlSettingsActivity" />

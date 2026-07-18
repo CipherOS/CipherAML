@@ -45,6 +45,9 @@
     <!-- Footer. %1$s is the app version. -->
     <string name="settings_footer">CipherAML by CipherOS, version %1$s</string>
 
+    <!-- Row title in Settings > Location > Location services. -->
+    <string name="injected_setting_title">CipherAML emergency location</string>
+
     <!-- Summary shown in Settings when AML is on or off. -->
     <string name="summary_on">On</string>
     <string name="summary_off">Off</string>
