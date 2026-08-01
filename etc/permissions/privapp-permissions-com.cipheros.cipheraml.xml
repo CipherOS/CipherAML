@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2026 The CipherOS Project
+
+     Licensed under the CipherOS License 2.0. See the LICENSE file in the
+     root of this repository for the full terms.
+-->
+
+<!--
+    Privileged permissions for CipherAML.
+
+    This file has to sit on the same partition as the app (system_ext by
+    default). On builds with ro.control_privapp_permissions=enforce the
+    device will not boot if a privileged permission the app asks for is
+    missing from here, so keep it in sync with AndroidManifest.xml.
+-->
+<permissions>
+    <privapp-permissions package="com.cipheros.cipheraml">
+        <!-- Outgoing emergency call and emergency SMS callbacks. -->
+        <permission name="android.permission.READ_ACTIVE_EMERGENCY_SESSION" />
+        <!-- Get a location fix even with location switched off (Android 14+). -->
+        <permission name="android.permission.LOCATION_BYPASS" />
+        <!-- IMEI, IMSI and MSISDN for the AML message. -->
+        <permission name="android.permission.READ_PRIVILEGED_PHONE_STATE" />
+        <!-- Send the AML SMS without writing it to the user's sent folder. -->
+        <permission name="android.permission.MODIFY_PHONE_STATE" />
+    </privapp-permissions>
+</permissions>

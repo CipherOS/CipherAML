@@ -17,6 +17,10 @@ android_app {
 
     privileged: true,
     system_ext_specific: true,
+
+    required: [
+        "privapp-permissions-com.cipheros.cipheraml.xml",
+    ],
 }
 
 // Host side tests for the transport agnostic bits in core/. Those classes
@@ -33,4 +37,13 @@ java_test_host {
         unit_test: true,
     },
     test_suites: ["general-tests"],
+}
+
+// Privileged permission allowlist. Must be on the same partition as the app.
+prebuilt_etc {
+    name: "privapp-permissions-com.cipheros.cipheraml.xml",
+    src: "etc/permissions/privapp-permissions-com.cipheros.cipheraml.xml",
+    sub_dir: "permissions",
+    filename_from_src: true,
+    system_ext_specific: true,
 }
