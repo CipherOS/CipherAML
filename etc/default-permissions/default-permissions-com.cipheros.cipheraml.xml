@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2026 The CipherOS Project
+
+     Licensed under the CipherOS License 2.0. See the LICENSE file in the
+     root of this repository for the full terms.
+-->
+
+<!--
+    Runtime permissions CipherAML gets out of the box.
+
+    Being a priv-app does not grant runtime permissions, and there is no
+    moment where it would make sense to ask the user for them, so the
+    system grants them on first boot instead.
+
+    None are fixed. The user can revoke any of them from app info, and
+    the settings screen will tell them AML may not work if they do.
+-->
+<exceptions>
+    <exception package="com.cipheros.cipheraml">
+        <permission name="android.permission.ACCESS_FINE_LOCATION" fixed="false" />
+        <permission name="android.permission.ACCESS_COARSE_LOCATION" fixed="false" />
+        <permission name="android.permission.ACCESS_BACKGROUND_LOCATION" fixed="false" />
+        <!-- SMS permissions are hard restricted, so they also need allowlisting. -->
+        <permission name="android.permission.SEND_SMS" fixed="false" whitelisted="true" />
+    </exception>
+</exceptions>
