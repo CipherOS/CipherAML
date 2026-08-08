@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2026 The CipherOS Project
+
+     Licensed under the CipherOS License 2.0. See the LICENSE file in the
+     root of this repository for the full terms.
+-->
+<config>
+    <!--
+        Allows LocationRequest.Builder#setLocationSettingsIgnored(). Some
+        framework versions check this list in addition to LOCATION_BYPASS,
+        so we ask for both. Without it AML still works, but only when the
+        user has location switched on.
+    -->
+    <allow-ignore-location-settings package="com.cipheros.cipheraml" />
+</config>
