@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2026 The CipherOS Project
+
+     Licensed under the CipherOS License 2.0. See the LICENSE file in the
+     root of this repository for the full terms.
+-->
+
+<!--
+    What a device or ROM is allowed to change with a runtime resource
+    overlay. Only preinstalled overlays (or ones signed with our key) can
+    touch these. Strings and layouts are deliberately not on the list.
+-->
+<resources>
+    <overlayable name="CipherAMLConfig">
+        <policy type="product|system|vendor|odm|oem|signature">
+            <item type="bool" name="config_amlEnabledByDefault" />
+            <item type="integer" name="config_amlLocationTimeoutMillis" />
+            <item type="integer" name="config_amlEarlySendAccuracyMeters" />
+            <item type="integer" name="config_amlConfidencePercent" />
+            <item type="integer" name="config_amlMinBatteryPercent" />
+            <item type="integer" name="config_amlMaxCachedFixAgeMillis" />
+            <item type="xml" name="aml_endpoints" />
+        </policy>
+    </overlayable>
+</resources>
