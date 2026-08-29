@@ -92,8 +92,16 @@ public final class AmlSettingsActivity extends Activity {
 
     private void updateStatus() {
         TelephonyManager tm = getSystemService(TelephonyManager.class);
-        String operator = tm != null ? tm.getNetworkOperator() : null;
-        String iso = tm != null ? tm.getNetworkCountryIso() : null;
+        String operator = null;
+        String iso = null;
+        try {
+            if (tm != null) {
+                operator = tm.getNetworkOperator();
+                iso = tm.getNetworkCountryIso();
+            }
+        } catch (UnsupportedOperationException e) {
+            // No radio. Falls through to the "not connected" message.
+        }
         if (TextUtils.isEmpty(operator) && TextUtils.isEmpty(iso)) {
             mStatus.setText(R.string.settings_status_no_network);
             return;

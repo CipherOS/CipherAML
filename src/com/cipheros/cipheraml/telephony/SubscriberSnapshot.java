@@ -13,6 +13,8 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.util.function.Supplier;
+
 /**
  * The phone and network identifiers AML needs, read once at the start of
  * a session.
@@ -20,6 +22,8 @@ import android.util.Log;
  * <p>Any of these can be missing. No SIM, limited service and dual SIM
  * phones with a dead slot are all normal during an emergency, so every
  * lookup is allowed to fail on its own without taking the others down.
+ * That includes the UnsupportedOperationException newer releases throw
+ * when the device lacks a telephony feature.
  */
 public final class SubscriberSnapshot {
     private static final String TAG = "CipherAML";
@@ -50,63 +54,69 @@ public final class SubscriberSnapshot {
     public static SubscriberSnapshot capture(Context context, int subId) {
         TelephonyManager base = context.getSystemService(TelephonyManager.class);
         boolean validSub = SubscriptionManager.isValidSubscriptionId(subId);
+        if (base == null) {
+            return new SubscriberSnapshot(subId, null, null, null, null, null, null);
+        }
         TelephonyManager tm = validSub ? base.createForSubscriptionId(subId) : base;
 
-        String networkOperator = tm.getNetworkOperator();
+        String networkOperator = safe("network operator", tm::getNetworkOperator);
         if (TextUtils.isEmpty(networkOperator) && tm != base) {
-            networkOperator = base.getNetworkOperator();
+            networkOperator = safe("network operator", base::getNetworkOperator);
         }
 
-        String imsi = null;
-        if (validSub) {
-            try {
-                imsi = tm.getSubscriberId();
-            } catch (SecurityException e) {
-                Log.w(TAG, "No access to IMSI", e);
-            }
-        }
+        String imsi = validSub ? safe("IMSI", tm::getSubscriberId) : null;
+        String simOperator = validSub ? safe("SIM operator", tm::getSimOperator) : null;
 
-        String imei = null;
-        try {
-            int slot = validSub ? SubscriptionManager.getSlotIndex(subId)
-                    : SubscriptionManager.INVALID_SIM_SLOT_INDEX;
-            imei = slot >= 0 ? base.getImei(slot) : base.getImei();
-        } catch (SecurityException e) {
-            Log.w(TAG, "No access to IMEI", e);
-        }
+        int slot = validSub ? SubscriptionManager.getSlotIndex(subId)
+                : SubscriptionManager.INVALID_SIM_SLOT_INDEX;
+        String imei = safe("IMEI", () -> slot >= 0 ? base.getImei(slot) : base.getImei());
 
         String msisdn = null;
-        if (validSub) {
-            try {
-                SubscriptionManager sm = context.getSystemService(SubscriptionManager.class);
-                msisdn = sm.getPhoneNumber(subId);
-            } catch (SecurityException | IllegalArgumentException e) {
-                Log.w(TAG, "No access to MSISDN", e);
-            }
+        SubscriptionManager sm = context.getSystemService(SubscriptionManager.class);
+        if (validSub && sm != null) {
+            msisdn = safe("MSISDN", () -> sm.getPhoneNumber(subId));
         }
 
-        return new SubscriberSnapshot(subId, imsi, imei, networkOperator,
-                validSub ? tm.getSimOperator() : null, msisdn, networkCountryIso(base, tm));
+        return new SubscriberSnapshot(subId, imsi, imei, networkOperator, simOperator, msisdn,
+                networkCountryIso(base, tm));
     }
 
     private static String networkCountryIso(TelephonyManager base, TelephonyManager tm) {
-        String iso = tm.getNetworkCountryIso();
+        String iso = safe("network country", tm::getNetworkCountryIso);
         if (!TextUtils.isEmpty(iso)) {
             return iso;
         }
         // Without a SIM there is no subscription to ask, but every modem
         // still knows which country it is camped in.
-        for (int slot = 0; slot < base.getActiveModemCount(); slot++) {
-            try {
-                iso = base.getNetworkCountryIso(slot);
-            } catch (IllegalArgumentException e) {
-                continue;
-            }
+        Integer modems = safeInt(base::getActiveModemCount);
+        for (int slot = 0; modems != null && slot < modems; slot++) {
+            int s = slot;
+            iso = safe("network country", () -> base.getNetworkCountryIso(s));
             if (!TextUtils.isEmpty(iso)) {
                 return iso;
             }
         }
         return null;
+    }
+
+    private static String safe(String what, Supplier<String> lookup) {
+        try {
+            return lookup.get();
+        } catch (RuntimeException e) {
+            // SecurityException, UnsupportedOperationException,
+            // IllegalArgumentException for a bad slot... none of them are
+            // worth failing the whole session over.
+            Log.w(TAG, "Could not read " + what + ": " + e);
+            return null;
+        }
+    }
+
+    private static Integer safeInt(Supplier<Integer> lookup) {
+        try {
+            return lookup.get();
+        } catch (RuntimeException e) {
+            return null;
+        }
     }
 
     private static String mcc(String operator) {
