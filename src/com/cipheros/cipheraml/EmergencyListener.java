@@ -44,9 +44,11 @@ final class EmergencyListener extends TelephonyCallback
                     new EmergencyListener(AmlController.get(context)));
             Log.i(TAG, "Listening for emergency calls");
         } catch (SecurityException e) {
-            // Almost always a missing privapp-permissions entry. Loud on
-            // purpose, this means AML is dead on this build.
-            Log.wtf(TAG, "Cannot listen for emergency calls, check the privapp allowlist", e);
+            // Almost always a missing privapp-permissions entry, and it
+            // means AML is dead on this build. Not Log.wtf though: with
+            // wtf_is_fatal set that kills us, and we are persistent, so it
+            // would turn into a crash loop at boot.
+            Log.e(TAG, "Cannot listen for emergency calls, check the privapp allowlist", e);
         } catch (UnsupportedOperationException e) {
             // Wi-Fi only tablets and the like. Nothing to do here.
             Log.i(TAG, "Telephony not supported on this device, AML stays idle");
