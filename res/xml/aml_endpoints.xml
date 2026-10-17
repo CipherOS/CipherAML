@@ -9,22 +9,25 @@
 <!--
     AML endpoint table.
 
-    This ships EMPTY on purpose. AML destinations are run by national
-    emergency services, they change, and some of them only accept traffic
-    from OS vendors they have an agreement with. Sending an emergency
-    location to the wrong number helps nobody, so please only add entries
-    you got from an official source (the national regulator, the PSAP
-    operator, EENA's AML deployment list) and that you have permission to
-    use.
+    AML destinations are run by national emergency services. Most of them
+    were agreed privately between the PSAP, the mobile operators and the
+    big OS vendors, and are not published anywhere. Sending an emergency
+    location to the wrong place helps nobody, so the rule here is simple:
+
+      * A country only gets an <sms> or <https> line when an official or
+        primary source says where AML goes. Every entry cites its source.
+      * Countries we care about but could not find a public endpoint for
+        are listed with their triggers only. They do nothing until someone
+        adds an endpoint obtained from the PSAP operator.
 
     You can replace this table without touching the app:
-      * drop a file at /product/etc/cipheraml/aml_endpoints.xml
-        (cipher.aml.mk can do this for you, see the README), or
+      * drop a file at /product/etc/cipheraml/aml_endpoints.xml or
+        /system_ext/etc/cipheraml/aml_endpoints.xml, or
       * overlay this resource with an RRO.
 
     Format:
 
-    <country name="..."          Free text, only used in logs.
+    <country name="..."          Free text, only used in logs and Settings.
              mcc="234,235"       Network MCCs this entry applies to.
              iso="gb"            Country ISO codes, used when the MCC is
                                  not known yet (limited service).
@@ -42,13 +45,11 @@
         <https url="https://..." />  Annex B HTTPS endpoint. https only.
     </country>
 
-    Example (not a real endpoint, do not uncomment as is):
-
-    <country name="Example" mcc="001" iso="xx">
-        <trigger number="112" />
-        <sms destination="112" />
-        <https url="https://aml.example.invalid/v1" />
-    </country>
+    Sources referred to below:
+      [ETSI]  ETSI TS 103 625 V1.2.1, Transporting Handset Location to
+              PSAPs for Emergency Communications, Advanced Mobile Location.
+      [EENA]  EENA, AML Report Card 2023 Update. Per country questionnaire
+              answered by the national authorities.
 -->
 <aml-endpoints version="1">
 </aml-endpoints>
