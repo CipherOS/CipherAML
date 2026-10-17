@@ -52,4 +52,25 @@
               answered by the national authorities.
 -->
 <aml-endpoints version="1">
+
+    <!--
+        United Kingdom.
+
+        AML SMS goes to 999 and is picked up by BT, which runs the Stage 1
+        PSAP and the AML end-point. SMS to 999 for AML is zero rated.
+
+          [ETSI] clause 6.3.4.1 refers to "the normal 999 code for UK AML
+                 messages".
+          [EENA] United Kingdom, 3.1: SMS to short number for Android and
+                 iOS. 3.3: zero rated. 3.4: BT Stage 1 PSAP.
+                 1.6: AML is activated for 112 and 999.
+
+        Jersey, Guernsey and the Isle of Man share MCC 234 but run their
+        own emergency services, so AML there may not reach BT.
+    -->
+    <country name="United Kingdom" mcc="234,235" iso="gb">
+        <trigger number="999" />
+        <trigger number="112" />
+        <sms destination="999" />
+    </country>
 </aml-endpoints>
