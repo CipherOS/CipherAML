@@ -73,4 +73,24 @@
         <trigger number="112" />
         <sms destination="999" />
     </country>
+
+    <!--
+        Slovakia.
+
+        AML SMS goes to 112 and is handled by the Ministry of Interior.
+        Zero rated.
+
+          [EENA] Slovakia, 3.1: SMS to short number for Android, iOS and
+                 HarmonyOS, additional details "SMS to 112 number".
+                 3.3: zero rated. 3.4: Ministry of Interior of the Slovak
+                 Republic. 1.6: AML is activated for 112, 150 (fire and
+                 rescue), 155 (emergency medical) and 158 (police).
+    -->
+    <country name="Slovakia" mcc="231" iso="sk">
+        <trigger number="112" />
+        <trigger number="150" />
+        <trigger number="155" />
+        <trigger number="158" />
+        <sms destination="112" />
+    </country>
 </aml-endpoints>
