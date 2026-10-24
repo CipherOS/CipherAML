@@ -93,4 +93,34 @@
         <trigger number="158" />
         <sms destination="112" />
     </country>
+
+    <!--
+        Germany. Endpoint pending, nothing is sent yet.
+
+        What is public:
+          * There is one national AML end-point, run by the Integrierte
+            Leitstelle Freiburg-Breisgau-Hochschwarzwald, with a passive
+            backup at the Berliner Feuerwehr. Over 230 PSAPs pull from it.
+          * It takes SMS to a short number (Android and iOS) and HTTPS
+            (Android), zero rated. Roamers are covered through HTTPS.
+          * SMS and HTTPS copies of the same fix are matched on the IMEI,
+            so do not set partial-imei here.
+          * Freiburg receives three messages per call, at 0, 15 and 30
+            seconds. CipherAML sends one for now.
+          * 112 triggers AML everywhere. 110 is being added state by state.
+
+        What is not public: the SMS short code and the HTTPS URL. Both were
+        agreed between Freiburg, the operators and the OS vendors. To turn
+        Germany on, ask ILS Freiburg for access and add the <sms> and/or
+        <https> lines they give you.
+
+          [EENA] Germany, 1.6, 3.1, 3.2, 3.3, 3.4, 3.6.
+          ILS Freiburg, "AML: Matching SMS with HTTPS", EENA webinar, 2022.
+          Help112 II D5.1 (2020), table 4-7: roaming via HTTPS.
+          teltarif.de, 2024: AML for 110 rolling out per federal state.
+    -->
+    <country name="Germany" mcc="262" iso="de">
+        <trigger number="112" />
+        <trigger number="110" />
+    </country>
 </aml-endpoints>
