@@ -123,4 +123,32 @@
         <trigger number="112" />
         <trigger number="110" />
     </country>
+
+    <!--
+        India. Endpoint pending, nothing is sent yet.
+
+        What is public:
+          * Google's Android ELS went live with UP 112 (Uttar Pradesh) in
+            December 2025, integrated by UP Police with Pert Telecom
+            Solutions. Other states are expected to follow under ERSS.
+          * It triggers on calls and SMS to 112.
+
+        What is not public: where the location goes. The integration is
+        private and no AML number or URL has been published.
+
+        Do NOT add <sms destination="112" /> here as a guess. ERSS takes
+        regular SMS to 112 from people (it is one of its official
+        channels), so an AML message there would land in front of a call
+        taker as a string of gibberish in the middle of an emergency.
+
+        To turn India on, get the end-point from ERSS (Ministry of Home
+        Affairs, C-DAC) or the state 112 service and add it below.
+
+          MHA, Emergency Response Support System (ERSS) page: SMS listed
+          as a 112 channel.
+          Launch coverage of Android ELS in Uttar Pradesh, December 2025.
+    -->
+    <country name="India" mcc="404,405" iso="in">
+        <trigger number="112" />
+    </country>
 </aml-endpoints>
