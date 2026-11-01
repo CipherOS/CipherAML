@@ -8,6 +8,13 @@ Services.
 Package: `com.cipheros.cipheraml`
 Website: [cipheros.org.in](https://cipheros.org.in)
 
+> **This project is still in development.** The code runs end to end and the
+> message format is tested against the ETSI spec, but CipherAML hasn't been
+> certified by any emergency authority, hasn't been tested against a live
+> emergency centre yet, and is only switched on in a couple of countries so
+> far. Emergency calls always go through either way, CipherAML only adds the
+> location on top. Please don't advertise it to users as finished yet.
+
 ## Why we built this
 
 If you call 112 from a regular Android phone in most of Europe (and a growing
