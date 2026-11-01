@@ -116,9 +116,9 @@ This is the part people ask about, so plainly:
 ## What's in the repo
 
 ```
-Android.bp                 App module, host tests, and the three XML modules
+Android.bp                 App module and host tests
 AndroidManifest.xml
-cipher.aml.mk              Product makefile, the one line integrators need
+cipheraml.mk               Product makefile: PRODUCT_PACKAGES and PRODUCT_COPY_FILES
 etc/
   permissions/             privapp-permissions allowlist
   default-permissions/     Runtime permissions granted on first boot
@@ -126,7 +126,7 @@ etc/
 res/
   values/config.xml        Overlayable tunables (T1, accuracy, confidence...)
   values/overlayable.xml   What an RRO is allowed to change
-  xml/aml_endpoints.xml    The per country endpoint table (empty, see below)
+  xml/aml_endpoints.xml    The per country endpoint table, see below
 src/com/cipheros/cipheraml/
   core/                    Pure Java message encoders, no Android imports
   config/                  Endpoint table model, parser and loader
@@ -153,6 +153,9 @@ tests/host/                JUnit tests for core/, run on the host
 
 ## Integrating it into your ROM
 
+This works the same way for CipherOS and for any other AOSP based OS or
+ROM.
+
 ### 1. Get the source
 
 Add it to your local manifest. Point `remote` at wherever you mirror this
@@ -165,26 +168,32 @@ repo:
          revision="main" />
 ```
 
+Keep the path as `packages/apps/CipherAML`. The makefile copies files from
+there, so if you check it out somewhere else, fix the paths in
+`cipheraml.mk` to match.
+
 ### 2. Inherit the makefile
 
-In your device or vendor product makefile:
+In your device or vendor product makefile (`device.mk`, `common.mk`, or
+whatever your tree uses):
 
 ```make
-$(call inherit-product, packages/apps/CipherAML/cipher.aml.mk)
+$(call inherit-product, packages/apps/CipherAML/cipheraml.mk)
 ```
 
-That pulls in four things:
+`cipheraml.mk` is a plain AOSP style product makefile. It builds the app
+and copies the three XMLs it needs onto the device:
 
-| What | Installed to |
-| --- | --- |
-| `CipherAML` (the app) | `/system_ext/priv-app/CipherAML/` |
-| `privapp-permissions-com.cipheros.cipheraml.xml` | `/system_ext/etc/permissions/` |
-| `default-permissions-com.cipheros.cipheraml.xml` | `/system_ext/etc/default-permissions/` |
-| `cipheraml-sysconfig.xml` | `/system_ext/etc/sysconfig/cipheraml.xml` |
+| What | How | Installed to |
+| --- | --- | --- |
+| `CipherAML` (the app) | `PRODUCT_PACKAGES` | `/system_ext/priv-app/CipherAML/` |
+| `privapp-permissions-com.cipheros.cipheraml.xml` | `PRODUCT_COPY_FILES` | `/system_ext/etc/permissions/` |
+| `default-permissions-com.cipheros.cipheraml.xml` | `PRODUCT_COPY_FILES` | `/system_ext/etc/default-permissions/` |
+| `cipheraml.xml` (sysconfig) | `PRODUCT_COPY_FILES` | `/system_ext/etc/sysconfig/` |
 
-If you'd rather not use the makefile, adding those four names to
-`PRODUCT_PACKAGES` yourself does the same thing. Actually just `CipherAML`
-is enough, since the app module lists the other three as `required`.
+If you'd rather not inherit it, copy its lines into your own makefile. Just
+don't add `CipherAML` to `PRODUCT_PACKAGES` on its own: without the privapp
+allowlist next to it, an enforcing build won't boot.
 
 **If your build ships Google apps, don't include CipherAML.** Google's ELS
 is already there and you'd end up sending two AML messages per call.
@@ -192,32 +201,29 @@ Something like this works:
 
 ```make
 ifneq ($(WITH_GMS),true)
-$(call inherit-product, packages/apps/CipherAML/cipher.aml.mk)
+$(call inherit-product, packages/apps/CipherAML/cipheraml.mk)
 endif
 ```
 
-### 3. Add your endpoint table
+### 3. Endpoints
 
-Out of the box the endpoint table is **empty**, so CipherAML does nothing
-until you fill it in. That's on purpose; see
-[The endpoint table](#the-endpoint-table) for why and for the format.
+The app already ships a table with every country we could verify, see
+[The endpoint table](#the-endpoint-table). You don't need to do anything
+for those.
 
-Once you have a table, the easiest way to ship it is to set
-`CIPHER_AML_ENDPOINTS` before the inherit line:
+If you have endpoints of your own, for example from your own agreement with
+a PSAP, ship a table next to the app:
 
 ```make
-CIPHER_AML_ENDPOINTS := device/acme/phone/aml/aml_endpoints.xml
-$(call inherit-product, packages/apps/CipherAML/cipher.aml.mk)
+PRODUCT_COPY_FILES += \
+    device/acme/phone/aml/aml_endpoints.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/cipheraml/aml_endpoints.xml
 ```
 
-That copies it to `/product/etc/cipheraml/aml_endpoints.xml`, which the app
-reads in preference to its built in table. A path that doesn't exist fails
-the build instead of quietly giving you a phone that sends nothing.
-
-You can also replace `res/xml/aml_endpoints.xml` with a runtime resource
-overlay, or drop a file at `/system_ext/etc/cipheraml/aml_endpoints.xml`.
-The lookup order is `/product`, then `/system_ext`, then the (possibly
-overlaid) resource.
+The app reads `/product/etc/cipheraml/aml_endpoints.xml` first, then
+`/system_ext/etc/cipheraml/aml_endpoints.xml`, then its built in table
+(which you can also replace with a runtime resource overlay). The first one
+it finds wins outright, so start from a copy of our table rather than an
+empty file, or you'll lose the countries we already cover.
 
 ### 4. Build and check
 
@@ -243,14 +249,15 @@ If you see `Cannot listen for emergency calls, check the privapp allowlist`
 instead, the permissions XML didn't make it onto the device or is on the
 wrong partition.
 
-Then do a dry run, below.
+Then do a dry run, see [Testing](#testing).
 
 ### Partitions
 
 Everything goes to `system_ext` by default. If you want it on `product`
-instead, switch `system_ext_specific: true` to `product_specific: true` on
-all four modules in `Android.bp`. The privapp allowlist has to be on the same
-partition as the app, so move them together.
+instead, swap `system_ext_specific: true` for `product_specific: true` in
+`Android.bp` and `TARGET_COPY_OUT_SYSTEM_EXT` for `TARGET_COPY_OUT_PRODUCT`
+in `cipheraml.mk`. The privapp allowlist has to be on the same partition as
+the app, so move them together.
 
 ### The privileged permissions, and why
 
