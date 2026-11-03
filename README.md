@@ -292,13 +292,46 @@ AML is set up country by country. Each country decides which emergency
 numbers trigger it and where the location goes: an SMS short code, a long
 number, an HTTPS server, or a mix.
 
-We ship the table empty, deliberately. These endpoints are run by national
-emergency services, they change, and some of them only accept messages from
-OS vendors they have an agreement with. Guessing a number and getting it
-wrong means someone's location goes nowhere at the worst possible moment.
-So please only add entries you got from an official source (the national
-regulator, the PSAP operator, or EENA's AML deployment information) and
-that you're allowed to use.
+Here's the catch: most AML endpoints were never published. They were agreed
+privately between each country's emergency services, its mobile operators,
+Google and Apple. Guessing a number and getting it wrong means someone's
+location goes nowhere at the worst possible moment, or worse, lands in
+front of a call taker as noise. So we follow one rule: a country only gets
+an endpoint when an official or primary source says where AML goes, and
+every entry cites that source in the XML.
+
+Where things stand today:
+
+| Country | Triggers | Location goes to | Status | Source |
+| --- | --- | --- | --- | --- |
+| United Kingdom | 999, 112 | SMS to 999 (BT) | On | ETSI TS 103 625 clause 6.3.4.1, EENA AML Report Card 2023 |
+| Slovakia | 112, 150, 155, 158 | SMS to 112 (Ministry of Interior) | On | EENA AML Report Card 2023 |
+| Germany | 112, 110 | Not public (ILS Freiburg) | Pending | EENA AML Report Card 2023, ILS Freiburg |
+| India | 112 | Not public (UP 112 / ERSS) | Pending | MHA ERSS, UP 112 ELS launch |
+
+"Pending" means the country is in the table with its trigger numbers but
+has no endpoint yet, so nothing is sent and Settings says AML isn't set up
+there. Adding the endpoint is a one line change once someone has it.
+
+**Germany.** There's one national AML end-point, run by the Integrierte
+Leitstelle Freiburg-Breisgau-Hochschwarzwald with a passive backup at the
+Berliner Feuerwehr. It takes SMS to a short code and HTTPS, matches the two
+on the IMEI, and covers roamers over HTTPS. What isn't public is the short
+code and the URL. To switch Germany on we need access from ILS Freiburg.
+
+**India.** Google's ELS went live with UP 112 in Uttar Pradesh in December
+2025, integrated by UP Police with Pert Telecom Solutions, and other states
+are expected to follow under ERSS. The endpoint is private. Please don't
+point it at 112 as a guess: ERSS takes ordinary SMS to 112 from people, so
+an AML message would show up in front of a call taker as gibberish. To
+switch India on we need the endpoint from ERSS (MHA and C-DAC) or a state
+112 service.
+
+**Everyone else.** EENA counts 30 or so countries running AML, mostly in
+Europe. Their endpoints aren't public either. EENA offers to put
+implementers in touch with the people running AML in each country, which is
+the route we're taking. If you run a PSAP, or you have an endpoint you're
+allowed to share, a pull request with the source is very welcome.
 
 The format is documented at the top of `res/xml/aml_endpoints.xml`. A full
 entry looks like this:
@@ -379,11 +412,15 @@ countries have test procedures for exactly this.
 
 We'd rather you hear these from us:
 
-- No endpoints ship by default, see above.
+- Only the UK and Slovakia are switched on. Germany and India are waiting
+  on endpoint access, see [The endpoint table](#the-endpoint-table).
 - CipherAML hasn't been certified by any emergency authority, and as far as
   we know it hasn't been tested against a live PSAP yet.
 - One message per emergency. We don't send follow up updates if a better
-  fix turns up later.
+  fix turns up later. Germany's end-point expects three (at 0, 15 and 30
+  seconds), so this needs fixing before Germany goes live.
+- No custom SMSC address yet. Belgium's roaming setup (the AML SMS goes
+  through SMSC +32112) needs it.
 - When the network location provider doesn't say whether a fix came from
   Wi-Fi or cell towers, we guess from the accuracy.
 - Data SMS uses the standard little endian 7-bit packing. A few legacy
@@ -398,6 +435,10 @@ We'd rather you hear these from us:
 
 - [ETSI TS 103 625](https://www.etsi.org/deliver/etsi_ts/103600_103699/103625/),
   the AML spec itself
+- [EENA AML Report Card 2023](https://eena.org/knowledge-hub/documents/aml-report-card-2023-update),
+  how each country runs AML
+- [ECC Report 368](https://docdb.cept.org/download/4814), on SMS to PSAPs
+  and AML for roamers
 - [Advanced Mobile Location on Wikipedia](https://en.wikipedia.org/wiki/Advanced_Mobile_Location)
 - [How Google's ELS works](https://crisisresponse.google/emergencylocationservice/how-it-works/),
   for comparison
