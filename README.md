@@ -8,12 +8,14 @@ Services.
 Package: `com.cipheros.cipheraml`
 Website: [cipheros.org.in](https://cipheros.org.in)
 
-> **This project is still in development.** The code runs end to end and the
-> message format is tested against the ETSI spec, but CipherAML hasn't been
-> certified by any emergency authority, hasn't been tested against a live
-> emergency centre yet, and is only switched on in a couple of countries so
-> far. Emergency calls always go through either way, CipherAML only adds the
-> location on top. Please don't advertise it to users as finished yet.
+> **CipherAML is in development.** It works end to end in code and the
+> message format is tested against the ETSI spec, but it hasn't been
+> certified by any emergency authority, hasn't been tested against a real
+> emergency centre, and is only switched on in two countries so far. It can
+> fail, and it comes with no warranty. Please read
+> [Risks and disclaimer](#risks-and-disclaimer) before you put it on anyone's
+> phone. Emergency calls always go through either way; CipherAML only tries
+> to add your location on top.
 
 ## Why we built this
 
@@ -112,6 +114,57 @@ This is the part people ask about, so plainly:
 - You can turn it off in Settings > Location > Location services >
   CipherAML emergency location. Emergency calls work exactly the same either
   way.
+
+## Risks and disclaimer
+
+CipherAML is in development, and it deals with emergencies, so here's the
+honest version of what can go wrong.
+
+**It might not send anything.** The country might not be in the endpoint
+table. There might be no SIM, no signal for the SMS, or no data for HTTPS.
+Someone might have revoked a permission, the battery might be nearly flat,
+or there might just be a bug we haven't found yet.
+
+**It might send a location that's off.** GPS is weak indoors. Wi-Fi and
+cell fixes can be wrong by hundreds of metres, sometimes more. If nothing
+fresh comes in, we fall back on a fix that can be up to a minute old.
+
+**The other side might not use it.** No emergency centre has formally agreed
+to receive AML from CipherAML. For SMS endpoints that usually doesn't matter,
+since our SMS looks just like everyone else's, but nobody has promised us
+anything. Endpoints can also change or be switched off without notice, and
+our table won't know.
+
+**Nobody has certified it.** Not a regulator, not an emergency service, not
+a test lab. It also hasn't been tried against a live emergency centre.
+
+**It sends personal data on purpose.** Your location, your phone number
+(through the SMS itself), your IMEI and, over HTTPS, your IMSI go to the
+emergency service. That's the whole point, but you should know.
+
+**It can cost money in some cases.** AML SMS is free in the countries we
+support, but while roaming, or anywhere it isn't zero rated, the SMS or the
+HTTPS request might be charged.
+
+**It shouldn't run next to Google's ELS.** On a build with Play services
+you'd send two messages per call, which can confuse the receiving side.
+
+So, please:
+
+- **Don't rely on it.** If you can, always tell the call taker where you
+  are. Think of CipherAML as a bonus, not a guarantee.
+- **If you ship it in a ROM, that part is on you.** Test it on your devices,
+  check that it's allowed where your users live (some countries have rules
+  about who may send AML and how), get the emergency service's okay where
+  that's needed, and tell your users what it does.
+
+**The legal bit.** CipherAML is provided "as is", without warranty of any
+kind, express or implied. The CipherOS Project and its contributors aren't
+liable for any damage or loss that comes from using it, building it,
+shipping it, or it failing to work when someone needed it, to the fullest
+extent the law allows. Sections 5 and 6 of the [LICENSE](LICENSE) are what
+actually count here; this section is just the plain English version. By
+using, building or distributing CipherAML you accept these terms.
 
 ## What's in the repo
 
