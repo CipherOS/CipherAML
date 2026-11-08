@@ -1,9 +1,11 @@
 # CipherAML by CipherOS
 
-CipherAML sends your phone's location to emergency services when you call
-or text an emergency number. It's an open source implementation of Advanced
-Mobile Location (AML), built for Android ROMs that ship without Google Mobile
-Services.
+If you ever have to call for help, CipherAML tries to make sure the person
+who picks up knows where you are. When you call or text an emergency number,
+it quietly sends your phone's location to the emergency service, the same
+way phones with Google on them already do. It's our open source take on
+Advanced Mobile Location (AML), made for Android ROMs that ship without
+Google.
 
 Package: `com.cipheros.cipheraml`
 Website: [cipheros.org.in](https://cipheros.org.in)
@@ -57,28 +59,32 @@ A few things we cared about while doing it:
 
 ## How it works
 
-1. You call or text an emergency number. That covers the dialer, the
-   emergency button on the lock screen, and anything else that goes through
-   telephony.
-2. Telephony tells CipherAML through the `OutgoingEmergencyCallListener` and
-   `OutgoingEmergencySmsListener` system callbacks. The app runs as a
-   persistent, direct boot aware process, so this works even right after a
-   reboot before the phone has ever been unlocked.
+Here's what happens, step by step, when someone dials for help:
+
+1. You call or text an emergency number. It doesn't matter how: the dialer,
+   the emergency button on the lock screen, anything that goes through the
+   phone's telephony stack.
+2. Android lets CipherAML know, through two system callbacks
+   (`OutgoingEmergencyCallListener` and `OutgoingEmergencySmsListener`).
+   CipherAML is always running and starts before you unlock, so this works
+   even straight after a reboot.
 3. CipherAML checks a few things: is AML switched on, does the country
    you're in have an AML endpoint, is the number you dialled one that should
    trigger it, and is there enough battery left (the voice call always comes
    first).
-4. It asks GPS and the network location provider for fixes at the same
-   time, ignoring the location setting for this one request. It keeps the
-   best fix it gets and stops after 20 seconds (the spec calls this T1), or
-   earlier if GPS gets a fix that's good to 25 metres.
+4. It asks GPS and the network location provider for a fix at the same
+   time, even if you've switched location off. That switch is ignored for
+   this one request and nothing else. It keeps the best fix it gets and
+   stops after 20 seconds (the spec calls this T1), or sooner if GPS gets
+   within 25 metres.
 5. It builds the AML message from that fix and sends it to every endpoint
    configured for the country: an SMS, an HTTPS POST, or both.
-6. That's it. Nothing is stored. The SMS doesn't show up in your messages.
+6. That's it. Nothing is saved, and the SMS never shows up in your
+   messages.
 
-If no positioning method works at all, it still sends a message saying so,
-because the spec asks for that and because "we tried and got nothing" is
-useful information to a call taker.
+If nothing manages to get a fix, it still sends a message saying so. The
+spec asks for that, and "we tried and got nothing" is still useful to a call
+taker.
 
 Here's what an AML SMS looks like (on one line, wrapped here):
 
@@ -87,14 +93,15 @@ A"ML=1;lt=+54.76397;lg=-0.18305;rd=50;top=20130717141935;lc=90;pm=W;
 si=234300000000000;ei=356708041746734;mcc=234;mnc=30;ml=128
 ```
 
-Latitude and longitude, a radius in metres, when the fix was taken, how
-confident we are that you're inside that circle, how we got the fix (G for
-GPS, W for Wi-Fi, C for cell, N for nothing), and enough about the phone and
-network for the PSAP to match the message to your call.
+It's not pretty, but it's all there: latitude and longitude, a radius in
+metres, when the fix was taken, how sure we are that you're inside that
+circle, how we got the fix (G for GPS, W for Wi-Fi, C for cell, N for
+nothing), and just enough about the phone and network for the emergency
+centre to match the message to your call.
 
 ## Privacy
 
-This is the part people ask about, so plainly:
+This is the part people ask about most, so here it is plainly:
 
 - Your location is only sent during an emergency call or emergency SMS.
 - It only goes to the emergency endpoint for the country you're in, and only
@@ -198,16 +205,17 @@ tests/host/                JUnit tests for core/, run on the host
 - Android 14 (API 34) or newer. `LOCATION_BYPASS` showed up in 14. Older
   releases gate the same feature behind `WRITE_SECURE_SETTINGS`, which we'd
   rather not hand out, so we don't support them.
-- A Soong based tree. The app builds against `system_current`, not hidden
-  APIs, so it should drop into most AOSP derived trees without patches.
+- An AOSP based tree that builds with Soong, which is pretty much any
+  modern ROM. The app only uses `system_current` APIs, nothing hidden, so it
+  should drop in without patches.
 - GPS, obviously. A network location provider (for Wi-Fi and cell fixes) is
   optional but helps a lot indoors. Anything that registers as the `network`
   provider works, including microG's UnifiedNlp.
 
 ## Integrating it into your ROM
 
-This works the same way for CipherOS and for any other AOSP based OS or
-ROM.
+Whether you're building CipherOS or your own ROM, it's the same four
+steps. It should take you about as long as adding any other system app.
 
 ### 1. Get the source
 
@@ -374,7 +382,7 @@ Where things stand today:
 has no endpoint yet, so nothing is sent and Settings says AML isn't set up
 there. Adding the endpoint is a one line change once someone has it.
 
-**Germany.** There's one national AML end-point, run by the Integrierte
+**Germany.** There's one national AML endpoint, run by the Integrierte
 Leitstelle Freiburg-Breisgau-Hochschwarzwald with a passive backup at the
 Berliner Feuerwehr. It takes SMS to a short code and HTTPS, matches the two
 on the IMEI, and covers roamers over HTTPS. What isn't public is the short
@@ -451,7 +459,8 @@ entry looks like this:
 
 ## Tuning
 
-These live in `res/values/config.xml` and can be overlaid:
+Most people never need to touch these. If you do, they live in
+`res/values/config.xml` and can be overlaid:
 
 | Resource | Default | What it does |
 | --- | --- | --- |
@@ -499,14 +508,14 @@ countries have test procedures for exactly this.
 
 ## Known gaps
 
-We'd rather you hear these from us:
+Things we know aren't there yet. We'd rather you hear it from us:
 
 - Only the UK and Slovakia are switched on. Germany and India are waiting
   on endpoint access, see [The endpoint table](#the-endpoint-table).
 - CipherAML hasn't been certified by any emergency authority, and as far as
   we know it hasn't been tested against a live PSAP yet.
 - One message per emergency. We don't send follow up updates if a better
-  fix turns up later. Germany's end-point expects three (at 0, 15 and 30
+  fix turns up later. Germany's endpoint expects three (at 0, 15 and 30
   seconds), so this needs fixing before Germany goes live.
 - No custom SMSC address yet. Belgium's roaming setup (the AML SMS goes
   through SMSC +32112) needs it.
@@ -534,6 +543,7 @@ We'd rather you hear these from us:
 
 ## License
 
-CipherAML is released under the CipherOS License 2.0. See [LICENSE](LICENSE).
+CipherAML is released under the CipherOS License 2.0, see [LICENSE](LICENSE).
+Questions about licensing go to legal@cipheros.org.in.
 
 © 2019-2026 The CipherOS Project.
