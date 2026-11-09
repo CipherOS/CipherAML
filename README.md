@@ -320,24 +320,6 @@ instead, swap `system_ext_specific: true` for `product_specific: true` in
 in `cipheraml.mk`. The privapp allowlist has to be on the same partition as
 the app, so move them together.
 
-### The privileged permissions, and why
-
-| Permission | Why |
-| --- | --- |
-| `READ_ACTIVE_EMERGENCY_SESSION` | To be told when an emergency call or SMS goes out. |
-| `LOCATION_BYPASS` | To get a fix when the user has location turned off. |
-| `READ_PRIVILEGED_PHONE_STATE` | IMEI, IMSI and phone number for the message. |
-| `MODIFY_PHONE_STATE` | To send the SMS without it landing in the sent folder. |
-
-On builds with `ro.control_privapp_permissions=enforce` the device won't
-boot if any of these are missing from the allowlist, so if you change the
-manifest, change the XML too.
-
-The runtime ones (location, background location, `SEND_SMS`) are granted on
-first boot through the default-permissions file. They aren't fixed, so a
-user can revoke them, and the settings screen will tell them AML may not
-work if they do.
-
 ### Licensing for other ROMs
 
 CipherAML is under the CipherOS License 2.0. You're free to build it, study
