@@ -122,6 +122,35 @@
     </country>
 
     <!--
+        Australia.
+
+        Required by the Australian handset standard: a plain text AML v1
+        SMS to 1262612626, which the carriers hand to Telstra, the
+        Emergency Call Person for 000 and 112. It applies to any compliant
+        handset, not just one vendor.
+
+          AS/CA S042.1:2022, clause 5.2.2.1(g)(ii): "Within 25 seconds after
+          successful initiation of an Emergency Call, CE that incorporates
+          AML functionality shall initiate a Short Message (SM) containing
+          AML information to the Australian number 1262612626."
+          Clause 5.2.2.1(h): handsets "shall not initiate" it "when the CE
+          is roaming outside Australia". Communications Alliance G557.6:2021
+          also leaves inbound international roamers out, which the default
+          roaming-sms="false" takes care of.
+          https://www.commsalliance.com.au/__data/assets/pdf_file/0005/83696/S042-1_2022.pdf
+
+        Clause 5.2.2.1(g)(iv) says the SMS "should" carry IMEI and IMSI. We
+        send the full IMEI and cut the IMSI down to MCC and MNC, as
+        TS 103 625 annex A asks. 106, the text relay emergency number, is
+        not a trigger.
+    -->
+    <country name="Australia" mcc="505" iso="au">
+        <trigger number="000" />
+        <trigger number="112" />
+        <sms destination="1262612626" />
+    </country>
+
+    <!--
         Germany. Endpoint pending, nothing is sent yet.
 
         What is public:

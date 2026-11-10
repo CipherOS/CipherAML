@@ -27,6 +27,7 @@ Where things stand today:
 | United Kingdom | 999, 112 | SMS to 999 (BT) | On | ETSI TS 103 625 clause 6.3.4.1, EENA AML Report Card 2023 |
 | Slovakia | 112, 150, 155, 158 | SMS to 112 (Ministry of Interior) | On | EENA AML Report Card 2023 |
 | Lithuania | 112 | SMS to 112 (Emergency Response Centre) | On | 112.lt, "Locating the caller" |
+| Australia | 000, 112 | SMS to 1262612626 (Telstra) | On | AS/CA S042.1:2022 clause 5.2.2.1(g) |
 | Germany | 112, 110 | Not public (ILS Freiburg) | Pending | EENA AML Report Card 2023, ILS Freiburg |
 | India | 112 | Not public (UP 112 / ERSS) | Pending | MHA ERSS, UP 112 ELS launch |
 
