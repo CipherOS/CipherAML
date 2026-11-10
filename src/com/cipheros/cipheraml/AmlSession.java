@@ -160,12 +160,17 @@ final class AmlSession implements SendListener {
         }
 
         if (mCountry != null) {
-            for (SmsEndpoint endpoint : mCountry.smsEndpoints()) {
-                if (mSmsTransport == null) {
-                    mSmsTransport = new SmsTransport(mContext, mHandler, this);
+            if (smsAllowed()) {
+                for (SmsEndpoint endpoint : mCountry.smsEndpoints()) {
+                    if (mSmsTransport == null) {
+                        mSmsTransport = new SmsTransport(mContext, mHandler, this);
+                    }
+                    mPendingSends++;
+                    mSmsTransport.send(mTrigger.subId, endpoint, report);
                 }
-                mPendingSends++;
-                mSmsTransport.send(mTrigger.subId, endpoint, report);
+            } else if (!mCountry.smsEndpoints().isEmpty()) {
+                Log.i(TAG, "SIM is from MCC " + mSubscriber.homeMcc + ", not sending AML SMS"
+                        + " in " + mCountry.name() + " (roaming-sms is off)");
             }
             for (HttpsEndpoint endpoint : mCountry.httpsEndpoints()) {
                 if (mHttpsTransport == null) {
@@ -178,6 +183,10 @@ final class AmlSession implements SendListener {
         if (mPendingSends == 0) {
             finish();
         }
+    }
+
+    private boolean smsAllowed() {
+        return mCountry.allowsRoamingSms() || !mCountry.isForeignSim(mSubscriber.homeMcc);
     }
 
     private AmlReport buildReport(Location best, int confidence) {
@@ -207,7 +216,8 @@ final class AmlSession implements SendListener {
         if (mCountry == null) {
             Log.i(TAG, "Dry run: no endpoint configured here, a real call would send nothing");
         } else {
-            Log.i(TAG, "Dry run: a real call would go to " + mCountry.smsEndpoints() + " "
+            Log.i(TAG, "Dry run: a real call would go to "
+                    + (smsAllowed() ? mCountry.smsEndpoints() : "no SMS (foreign SIM)") + " "
                     + mCountry.httpsEndpoints());
         }
     }

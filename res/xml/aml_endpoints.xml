@@ -31,7 +31,12 @@
              mcc="234,235"       Network MCCs this entry applies to.
              iso="gb"            Country ISO codes, used when the MCC is
                                  not known yet (limited service).
-             confidence="90">    Optional, overrides config_amlConfidencePercent.
+             confidence="90"     Optional, overrides config_amlConfidencePercent.
+             roaming-sms="false"> Also send the SMS from foreign SIMs. Off by
+                                 default: a foreign SIM sends through its home
+                                 network, which would read the destination in
+                                 its own numbering plan. Only turn this on when
+                                 a source documents a roaming route.
 
         <trigger number="999" /> Numbers that start AML. Leave out every
         <trigger number="112" /> trigger to start on any emergency number.

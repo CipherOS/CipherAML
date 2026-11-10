@@ -110,3 +110,9 @@ entry looks like this:
   they fit. `partial-imei="true"` sends just the model part of the IMEI,
   which the spec allows when SMS is the only transport.
 - `<https>` only accepts `https://` URLs. Plain HTTP entries are dropped.
+- By default the SMS is only sent when the SIM is from the country you're
+  in. A foreign SIM sends SMS through its home network, so 112 would end up
+  at the home country's 112, and a national number like Australia's could
+  reach a stranger's phone back home. Set `roaming-sms="true"` on the
+  `<country>` only when a source documents how roamers' AML SMS is routed.
+  HTTPS endpoints are not affected.

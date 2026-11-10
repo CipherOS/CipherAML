@@ -26,6 +26,7 @@ public final class CountryConfig {
     private final List<SmsEndpoint> mSmsEndpoints;
     private final List<HttpsEndpoint> mHttpsEndpoints;
     private final int mConfidencePercent;
+    private final boolean mRoamingSms;
 
     private CountryConfig(Builder b) {
         mName = b.mName;
@@ -35,6 +36,7 @@ public final class CountryConfig {
         mSmsEndpoints = Collections.unmodifiableList(new ArrayList<>(b.mSmsEndpoints));
         mHttpsEndpoints = Collections.unmodifiableList(new ArrayList<>(b.mHttpsEndpoints));
         mConfidencePercent = b.mConfidencePercent;
+        mRoamingSms = b.mRoamingSms;
     }
 
     public String name() {
@@ -60,6 +62,26 @@ public final class CountryConfig {
     /** Per country confidence override, or 0 to use the global default. */
     public int confidencePercent() {
         return mConfidencePercent;
+    }
+
+    /**
+     * Whether SMS endpoints should also be used when the SIM comes from
+     * another country. Off unless the entry says otherwise, see
+     * {@link #isForeignSim(String)}.
+     */
+    public boolean allowsRoamingSms() {
+        return mRoamingSms;
+    }
+
+    /**
+     * A foreign SIM sends SMS through its home network, which reads the
+     * destination in its own numbering plan. A national number like
+     * Australia's ends up at some stranger back home, and 112 ends up at
+     * the home country's 112. Unknown home MCC (no SIM) is not foreign,
+     * there is nothing to send the SMS with anyway.
+     */
+    public boolean isForeignSim(String homeMcc) {
+        return homeMcc != null && !homeMcc.isEmpty() && !mMccs.contains(homeMcc);
     }
 
     public boolean hasEndpoints() {
@@ -93,7 +115,7 @@ public final class CountryConfig {
     public String toString() {
         return "country{" + mName + " mcc=" + mMccs + " iso=" + mIsos + " triggers="
                 + (mTriggers.isEmpty() ? "any" : mTriggers) + " " + mSmsEndpoints + " "
-                + mHttpsEndpoints + "}";
+                + mHttpsEndpoints + (mRoamingSms ? " roaming-sms" : "") + "}";
     }
 
     public static final class Builder {
@@ -104,6 +126,7 @@ public final class CountryConfig {
         private final List<SmsEndpoint> mSmsEndpoints = new ArrayList<>();
         private final List<HttpsEndpoint> mHttpsEndpoints = new ArrayList<>();
         private int mConfidencePercent;
+        private boolean mRoamingSms;
 
         public Builder setName(String name) {
             mName = name == null ? "" : name;
@@ -137,6 +160,11 @@ public final class CountryConfig {
 
         public Builder setConfidencePercent(int percent) {
             mConfidencePercent = percent;
+            return this;
+        }
+
+        public Builder setRoamingSms(boolean allowed) {
+            mRoamingSms = allowed;
             return this;
         }
 

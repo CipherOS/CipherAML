@@ -69,6 +69,7 @@ public final class EndpointConfigParser {
         for (String iso : isos) {
             b.addIso(iso);
         }
+        b.setRoamingSms(Boolean.parseBoolean(p.getAttributeValue(null, "roaming-sms")));
         String confidence = p.getAttributeValue(null, "confidence");
         if (confidence != null) {
             int value = parseInt(confidence, 0);
