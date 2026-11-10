@@ -59,6 +59,38 @@ Europe. Same story, nothing public. EENA does offer to put implementers in
 touch with the people running AML in each country, and that's the route
 we're taking.
 
+## Everywhere else we looked
+
+In November 2026 we went through regulators, laws, tenders, PSAP pages and
+slides, EENA, ETSI, CEPT, GSMA and EU Help112 documents, and the open source
+world (AOSP, Sailfish OS, OpenHarmony, microG, /e/OS and others) looking for
+more endpoints. Here's what came back for countries that are still off, so
+nobody has to repeat it:
+
+- **Belgium.** Close, but not clear enough. GSMA NG.119 (v6.0) describes the
+  roaming setup: Android phones use SMSC `+32112` so the SMS stays in the
+  visited network. The same document says the destination stays the
+  emergency number, but also that Orange Belgium visitors may only send to
+  `8112`, which is also Belgium's emergency SMS line for people. We won't
+  pick one until Astrid or BIPT says which.
+- **Switzerland.** The AML number is a "SMS-Large Account" that, by OFCOM
+  regulation (SR 784.101.113/1.3, section 4.3.4), "ne peut pas être rendu
+  public". Getting it means talking to Swisscom, which runs the endpoint.
+- **Spain.** The regulator CNMC confirms it's an SMS to a long number plus
+  HTTPS, handled by Vodafone's platform, but doesn't give the number.
+- **Romania.** A 2019 emergency ordinance named 114, but the Constitutional
+  Court struck the whole ordinance down in 2020. Don't use 114.
+- **United States and Canada.** Handset location goes through partner
+  pipelines (RapidSOS, Bell, TELUS) that only take data from Google and
+  Apple. Not something we can send to.
+- **Poland.** AML isn't running yet. The digital ministry plans it for 2027.
+- **Not public:** Denmark, Sweden, Finland, Norway, Estonia, Latvia, Iceland,
+  Ireland, Netherlands, Austria, France, Portugal, Italy, Czech Republic,
+  Slovenia, Bulgaria, Hungary, Luxembourg, Malta, New Zealand, Brazil,
+  Mexico, Malaysia and the UAE all run some form of AML, but none of them
+  publishes where it goes. The EENA report cards tell you who runs each
+  endpoint, which is the place to start asking.
+
 ## Know an endpoint? Send it in
 
 If you know the AML endpoint for a country, and you got it the legit way,
