@@ -109,6 +109,7 @@ where to send, and we won't guess.
 | --- | --- | --- |
 | United Kingdom | On | SMS to 999 |
 | Slovakia | On | SMS to 112 |
+| Lithuania | On | SMS to 112 |
 | Germany | Pending | Not public yet |
 | India | Pending | Not public yet |
 

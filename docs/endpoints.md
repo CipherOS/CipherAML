@@ -11,9 +11,9 @@ and Apple, and that's where they stayed. EENA's yearly report will tell you
 *who* runs AML in a country, but not *where* to send it.
 
 We spent a good while digging through the ETSI spec, EU reports, EENA
-documents and government pages. The UK and Slovakia are the only two where
-an official source actually writes the destination down, so those are the
-only two that are switched on.
+documents and government pages. Only a handful of countries have an official
+source that actually writes the destination down, and those are the ones
+that are switched on.
 
 And we're not going to guess. A wrong number in an emergency isn't a bug you
 fix in the next release. So the rule is simple: a country only gets an
@@ -26,6 +26,7 @@ Where things stand today:
 | --- | --- | --- | --- | --- |
 | United Kingdom | 999, 112 | SMS to 999 (BT) | On | ETSI TS 103 625 clause 6.3.4.1, EENA AML Report Card 2023 |
 | Slovakia | 112, 150, 155, 158 | SMS to 112 (Ministry of Interior) | On | EENA AML Report Card 2023 |
+| Lithuania | 112 | SMS to 112 (Emergency Response Centre) | On | 112.lt, "Locating the caller" |
 | Germany | 112, 110 | Not public (ILS Freiburg) | Pending | EENA AML Report Card 2023, ILS Freiburg |
 | India | 112 | Not public (UP 112 / ERSS) | Pending | MHA ERSS, UP 112 ELS launch |
 

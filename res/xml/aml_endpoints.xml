@@ -95,6 +95,28 @@
     </country>
 
     <!--
+        Lithuania.
+
+        AML SMS goes to 112 and is handled by the Emergency Response
+        Centre (Bendrasis pagalbos centras), which runs 112 in Lithuania.
+
+          112.lt, "Locating the caller" (Emergency Response Centre): "When
+          calling 112 from a smartphone with an updated Android or iOS
+          operating system, [...] the handset itself determines its location
+          [...] and automatically sends its coordinates to 112 in a coded
+          SMS."
+          https://112.lt/en/calling-number-112/locating-the-caller/
+
+        Android also triggers on the old national numbers (101, 011, 102,
+        022) according to the EENA 2020 report card, but nothing public says
+        where those messages go, so we only trigger on 112.
+    -->
+    <country name="Lithuania" mcc="246" iso="lt">
+        <trigger number="112" />
+        <sms destination="112" />
+    </country>
+
+    <!--
         Germany. Endpoint pending, nothing is sent yet.
 
         What is public:
