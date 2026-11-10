@@ -193,6 +193,30 @@
     </country>
 
     <!--
+        Moldova.
+
+        AML SMS goes to 112, and the operators hand it to the AML server of
+        the 112 Service (SNUAU 112) over SMPP.
+
+          ANRCETI draft decision amending HCA 31/2016, point 10^1: operators
+          "au obligația de a transmite către numărul 112 mesajele SMS
+          generate automat de funcționalitatea AML" (must deliver to number
+          112 the SMS generated automatically by AML). This is the draft
+          text; we could not confirm the adopted version.
+          https://ro.anrceti.md/files/u1/HCA_modif_HCA_31_din_2016.pdf
+          SNUAU 112, presentation hosted by EENA (2023): working for Android
+          and iOS, "Free SMS to short number available", iOS fires on 112.
+          https://eena.org/wp-content/uploads/112-Moldova.pdf
+
+        Android also fires on 901, 902 and 903, but nothing says where those
+        messages go, so we stick to 112.
+    -->
+    <country name="Moldova" mcc="259" iso="md">
+        <trigger number="112" />
+        <sms destination="112" />
+    </country>
+
+    <!--
         Germany. Endpoint pending, nothing is sent yet.
 
         What is public:

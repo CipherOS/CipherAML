@@ -30,6 +30,7 @@ Where things stand today:
 | Australia | 000, 112 | SMS to 1262612626 (Telstra) | On | AS/CA S042.1:2022 clause 5.2.2.1(g) |
 | Croatia | 112 | SMS to 112 | On | HAKOM decision of 5 March 2024 |
 | Greece | 112 | SMS to 112 (112 Communication Centre) | On | General Secretariat for Civil Protection, 5 Aug 2020 |
+| Moldova | 112 | SMS to 112 (SNUAU 112) | On | ANRCETI draft decision (HCA 31/2016 amendment), SNUAU 112 via EENA |
 | Germany | 112, 110 | Not public (ILS Freiburg) | Pending | EENA AML Report Card 2023, ILS Freiburg |
 | India | 112 | Not public (UP 112 / ERSS) | Pending | MHA ERSS, UP 112 ELS launch |
 
