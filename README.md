@@ -12,7 +12,7 @@ Website: [cipheros.org.in](https://cipheros.org.in)
 > **CipherAML is in development.** It works end to end in code and the
 > message format is tested against the ETSI spec, but it hasn't been
 > certified by any emergency authority, hasn't been tested against a real
-> emergency centre, and is only switched on in two countries so far. It can
+> emergency centre, and is only switched on in a handful of countries. It can
 > fail, and it comes with no warranty. Please read
 > [Risks and disclaimer](#risks-and-disclaimer) before you put it on anyone's
 > phone. Emergency calls always go through either way; CipherAML only tries

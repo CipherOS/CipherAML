@@ -34,16 +34,17 @@ tests/host/                JUnit tests for core/, run on the host
 
 Things we know aren't there yet. We'd rather you hear it from us:
 
-- Only the UK and Slovakia are switched on. Germany and India are waiting
-  on endpoint access, see
-  [endpoints.md](endpoints.md).
+- Only a handful of countries are switched on, because most countries don't
+  publish their AML endpoints. Germany and India are waiting on endpoint
+  access, see [endpoints.md](endpoints.md).
+- No custom SMSC address, so we can't use routes like Belgium's +32112
+  that let roamers' AML reach the visited country. Foreign SIMs get no AML
+  SMS at all for now.
 - CipherAML hasn't been certified by any emergency authority, and as far as
   we know it hasn't been tested against a live PSAP yet.
 - One message per emergency. We don't send follow up updates if a better
   fix turns up later. Germany's endpoint expects three (at 0, 15 and 30
   seconds), so this needs fixing before Germany goes live.
-- No custom SMSC address yet. Belgium's roaming setup (the AML SMS goes
-  through SMSC +32112) needs it.
 - When the network location provider doesn't say whether a fix came from
   Wi-Fi or cell towers, we guess from the accuracy.
 - Data SMS uses the standard little endian 7-bit packing. A few legacy
