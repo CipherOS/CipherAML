@@ -1,11 +1,10 @@
 # CipherAML by CipherOS
 
-If you ever have to call for help, CipherAML tries to make sure the person
-who picks up knows where you are. When you call or text an emergency number,
-it quietly sends your phone's location to the emergency service, the same
-way phones with Google on them already do. It's our open source take on
-Advanced Mobile Location (AML), made for Android ROMs that ship without
-Google.
+CipherAML sends your phone's location to emergency services when you call
+or text an emergency number, so help can find you faster. It's an open
+source implementation of Advanced Mobile Location (AML), the same standard
+Google and Apple phones already use, built for Android ROMs that ship
+without Google.
 
 Package: `com.cipheros.cipheraml`
 Website: [cipheros.org.in](https://cipheros.org.in)
@@ -21,17 +20,17 @@ Website: [cipheros.org.in](https://cipheros.org.in)
 
 ## Why we built this
 
-If you call 112 from a regular Android phone in most of Europe (and a growing
-list of other places), something happens that you never see. Within a few
-seconds the phone turns on GPS and Wi-Fi location, works out where you are,
-and quietly sends that location to the emergency centre handling your call.
-The call taker sees you on a map, often to within a few metres, instead of
-somewhere inside a cell tower's coverage area that can be kilometres wide.
+When you call an emergency number from a regular Android phone or iPhone,
+something happens that you never see. Within seconds the phone works out
+where you are from GPS and Wi-Fi and sends that location to the emergency
+centre handling your call. The call taker sees you on a map, often within a
+few metres, instead of somewhere in a cell tower's coverage area that can be
+kilometres wide.
 
-That's AML. It started in the UK in 2014 (BT, EE and HTC worked it out
-together), was standardised by ETSI as TS 103 625, and is now something EU
-rules expect every smartphone to do. It's credited with saving lives, mostly
-in the boring way: an ambulance turns into the right street first time.
+That's AML. It started in the UK in 2014, was standardised by ETSI as
+TS 103 625, and now runs in more than 30 countries, from Brazil to India to
+New Zealand. It's credited with saving lives, mostly in the boring way: the
+ambulance turns into the right street first time.
 
 On Android, AML is implemented by Google as the Emergency Location Service
 (ELS), and it lives inside Google Play services. That's the problem. Take
@@ -116,6 +115,11 @@ where to send, and we won't guess.
 Know an endpoint and got it the legit way? We'll happily merge it. Sources,
 details on the pending countries, the rules for contributing and the table
 format are all in [docs/endpoints.md](docs/endpoints.md).
+
+## Finding it in Settings
+
+Settings > Location > Location services > **CipherAML emergency location**,
+the same spot as Google's Emergency Location Service.
 
 ## Privacy
 
