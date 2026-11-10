@@ -111,6 +111,7 @@ where to send, and we won't guess.
 | Slovakia | On | SMS to 112 |
 | Lithuania | On | SMS to 112 |
 | Australia | On | SMS to 1262612626 |
+| Croatia | On | SMS to 112 |
 | Germany | Pending | Not public yet |
 | India | Pending | Not public yet |
 

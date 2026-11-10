@@ -151,6 +151,28 @@
     </country>
 
     <!--
+        Croatia.
+
+        AML SMS goes to 112. HAKOM's decision of 5 March 2024 on caller
+        location accuracy records the operators' statements: iOS devices
+        "generiraju SMS AML samo prema 112 broju" (send AML SMS only to
+        112), and Android devices send it to "SMS destinaciju koja je
+        identična biranom broju hitne službe" (the same number as the
+        emergency number dialled). So a call to 112 means an SMS to 112.
+
+          HAKOM, decision KLASA UP/I-034-02/23-01/01, 5 March 2024.
+          https://hakom.hr/UserDocsImages/2024/odluke_rjesenja_presude/Odluka-mjerila%20pouzdanosti%20podataka%20o%20lokaciji%20pozivatelja%20na%20jedinstveni%20europski%20broj%20za%20hitne%20slu%C5%BEbe%20112%20i%20druge%20pozivne%20brojeve%20hitnih%20slu%C5%BEba%20u%20RH%2020230305.pdf
+
+        Android also fires on 192 to 195 and 1987, with the SMS going to the
+        dialled number, but not all of those services could take AML when
+        the decision was written, so we stick to 112.
+    -->
+    <country name="Croatia" mcc="219" iso="hr">
+        <trigger number="112" />
+        <sms destination="112" />
+    </country>
+
+    <!--
         Germany. Endpoint pending, nothing is sent yet.
 
         What is public:
