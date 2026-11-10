@@ -173,6 +173,26 @@
     </country>
 
     <!--
+        Greece.
+
+        AML SMS goes to 112 and is handled by the 112 Communication Centre.
+
+          General Secretariat for Civil Protection, press release, 5 August
+          2020: the location goes "στο Κέντρο Επικοινωνιών 112 μέσω SMS" (to
+          the 112 Communication Centre by SMS), and "τα SMS εντοπισμού θέσης
+          που στέλνονται στο 112" (the location SMS sent to 112) are free.
+          https://civilprotection.gov.gr/deltia-tupou/anabathmisi-toy-112-me-apolyti-akribeia-pleon-o-geoentopismos-oson-kaloyn-apo-kinita
+          civilprotection.gov.gr also says AML works on "Android (version
+          4.1 or later) or iOS (version 11.3 or later)", so plain text SMS
+          like ours is accepted.
+          https://civilprotection.gov.gr/en/112/pote-pos-kalo
+    -->
+    <country name="Greece" mcc="202" iso="gr">
+        <trigger number="112" />
+        <sms destination="112" />
+    </country>
+
+    <!--
         Germany. Endpoint pending, nothing is sent yet.
 
         What is public:
