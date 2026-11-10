@@ -99,6 +99,24 @@ circle, how we got the fix (G for GPS, W for Wi-Fi, C for cell, N for
 nothing), and just enough about the phone and network for the emergency
 centre to match the message to your call.
 
+## Where it works
+
+AML is set up country by country, and **governments don't publish where AML
+goes**. Each country agreed its endpoints privately with its mobile networks,
+Google and Apple. We only switch a country on when an official source says
+where to send, and we won't guess.
+
+| Country | Status | Location goes to |
+| --- | --- | --- |
+| United Kingdom | On | SMS to 999 |
+| Slovakia | On | SMS to 112 |
+| Germany | Pending | Not public yet |
+| India | Pending | Not public yet |
+
+Know an endpoint and got it the legit way? We'll happily merge it. Sources,
+details on the pending countries, the rules for contributing and the table
+format are all in [docs/endpoints.md](docs/endpoints.md).
+
 ## Privacy
 
 This is the part people ask about most, so here it is plainly:
@@ -185,23 +203,14 @@ The full guide covers requirements, the checkout path, what lands where,
 checking it worked, partitions and licensing. It's in
 [docs/integration.md](docs/integration.md).
 
-## Where it works
+## Docs
 
-AML is set up country by country, and **governments don't publish where AML
-goes**. Each country agreed its endpoints privately with its mobile networks,
-Google and Apple. We only switch a country on when an official source says
-where to send, and we won't guess.
-
-| Country | Status | Location goes to |
-| --- | --- | --- |
-| United Kingdom | On | SMS to 999 |
-| Slovakia | On | SMS to 112 |
-| Germany | Pending | Not public yet |
-| India | Pending | Not public yet |
-
-Know an endpoint and got it the legit way? We'll happily merge it. Sources,
-details on the pending countries, the rules for contributing and the table
-format are all in [docs/endpoints.md](docs/endpoints.md).
+- [Integrating it into your ROM](docs/integration.md)
+- [Permissions, and why we need them](docs/permissions.md)
+- [AML endpoints, country status and contributing](docs/endpoints.md)
+- [Configuration](docs/configuration.md)
+- [Testing](docs/testing.md)
+- [Working on the code, and known gaps](docs/development.md)
 
 ## Further reading
 
